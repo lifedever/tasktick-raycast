@@ -3,12 +3,15 @@ import { Icon, Color, List } from "@raycast/api";
 import type { Task } from "./types";
 
 /**
- * Visual hierarchy for the leading list-item icon:
- *   - running   → animated-feel green circle-progress
- *   - scheduled → blue calendar-clock (calendar reads as "scheduled" better than just clock)
- *   - manual    → purple play arrow (user-triggered)
+ * Visual hierarchy for the leading list-item icon. Color stays in a tight
+ * status palette (gray/blue/green/red) — purple/yellow tints make the row
+ * feel decorative rather than informational.
  *
- * `disabled` tasks dim the whole row regardless of kind.
+ *   - disabled            → gray  MinusCircle      (whole row reads as inert)
+ *   - running             → green CircleProgress   (live)
+ *   - last run failed     → red   Play / Calendar  (kind icon, red tint)
+ *   - scheduled (idle)    → blue  Calendar         (will fire on schedule)
+ *   - manual (idle)       → gray  Play             (neutral; user-triggered)
  */
 export function statusIcon(task: Task): List.Item.Props["icon"] {
     if (!task.enabled) {
@@ -17,10 +20,14 @@ export function statusIcon(task: Task): List.Item.Props["icon"] {
     if (task.status === "running") {
         return { source: Icon.CircleProgress, tintColor: Color.Green };
     }
-    if (task.kind === "scheduled") {
-        return { source: Icon.Calendar, tintColor: Color.Blue };
+    const kindIcon = task.kind === "scheduled" ? Icon.Calendar : Icon.Play;
+    if (typeof task.lastExitCode === "number" && task.lastExitCode !== 0) {
+        return { source: kindIcon, tintColor: Color.Red };
     }
-    return { source: Icon.Play, tintColor: Color.Purple };
+    if (task.kind === "scheduled") {
+        return { source: kindIcon, tintColor: Color.Blue };
+    }
+    return { source: kindIcon, tintColor: Color.SecondaryText };
 }
 
 /** Right-side accessory: kind chip + enabled marker + relative time. */
