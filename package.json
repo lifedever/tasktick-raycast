@@ -52,7 +52,8 @@
       "name": "search-tasks",
       "title": "Search Tasks",
       "description": "Search and run TaskTick tasks",
-      "mode": "view"
+      "mode": "view",
+      "icon": "command-icon.png"
     }
   ],
   "dependencies": {
