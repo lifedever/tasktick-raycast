@@ -24,6 +24,7 @@
       "type": "checkbox",
       "required": false,
       "title": "Show in-Raycast Toast",
+      "description": "Show an in-Raycast toast when you run, stop, or restart a task. Independent of TaskTick's system notifications.",
       "label": "Show feedback toast on Run/Stop/Restart",
       "default": true
     },
@@ -32,6 +33,7 @@
       "type": "dropdown",
       "required": false,
       "title": "Logs Display",
+      "description": "How the View Last Output detail renders logs.",
       "default": "text",
       "data": [
         {
