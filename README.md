@@ -1,6 +1,6 @@
 # TaskTick for Raycast
 
-Search, run, and monitor your [TaskTick](https://task-tick.lifedever.com) scheduled tasks from Raycast — never leave your keyboard to babysit a cron job again.
+Search, run, and monitor your [TaskTick](https://www.lifedever.com/TaskTick/) scheduled tasks from Raycast — never leave your keyboard to babysit a cron job again.
 
 ## Features
 
@@ -13,7 +13,7 @@ Search, run, and monitor your [TaskTick](https://task-tick.lifedever.com) schedu
 ## Requirements
 
 - macOS 14 or later
-- [TaskTick.app](https://task-tick.lifedever.com) 1.5.0 or later installed
+- [TaskTick.app](https://www.lifedever.com/TaskTick/) 1.5.0 or later installed
 - The `tasktick` CLI symlink enabled in **TaskTick → Settings → Advanced → Enable CLI**
   - Default symlink target: `/usr/local/bin/tasktick`
   - The extension also probes `~/.local/bin`, `/opt/homebrew/bin`, and the app's embedded binary as fallbacks
@@ -85,7 +85,7 @@ The events stream uses `tasktick events --json` as a long-lived subprocess. If y
 
 ## Links
 
-- **TaskTick homepage** — <https://task-tick.lifedever.com>
+- **TaskTick homepage** — <https://www.lifedever.com/TaskTick/>
 - **TaskTick app source** — <https://github.com/lifedever/TaskTick-app>
 - **This extension** — <https://github.com/lifedever/tasktick-raycast>
 

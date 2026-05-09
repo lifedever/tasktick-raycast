@@ -27,7 +27,7 @@ ${CLI_FALLBACK_PATHS.map((p) => `- \`${p}\``).join("\n")}
 
 ### Don't have TaskTick yet?
 
-Download it from [task-tick.lifedever.com](https://task-tick.lifedever.com).
+Download it from [www.lifedever.com/TaskTick/](https://www.lifedever.com/TaskTick/).
 `;
 
   return (
@@ -47,7 +47,7 @@ Download it from [task-tick.lifedever.com](https://task-tick.lifedever.com).
           />
           <Action.OpenInBrowser
             title="Download TaskTick"
-            url="https://task-tick.lifedever.com"
+            url="https://www.lifedever.com/TaskTick/"
           />
         </ActionPanel>
       }
