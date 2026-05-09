@@ -2,24 +2,24 @@
 import { promises as fs, constants as fsConstants } from "node:fs";
 
 const PROD_FALLBACKS = [
-    "/usr/local/bin/tasktick",
-    "/opt/homebrew/bin/tasktick",
-    "/Applications/TaskTick.app/Contents/MacOS/tasktick"
+  "/usr/local/bin/tasktick",
+  "/opt/homebrew/bin/tasktick",
+  "/Applications/TaskTick.app/Contents/MacOS/tasktick",
 ];
 
 const DEV_FALLBACKS = [
-    "/Applications/TaskTick Dev.app/Contents/MacOS/tasktick-dev",
-    "/usr/local/bin/tasktick-dev",
-    "/opt/homebrew/bin/tasktick-dev"
+  "/Applications/TaskTick Dev.app/Contents/MacOS/tasktick-dev",
+  "/usr/local/bin/tasktick-dev",
+  "/opt/homebrew/bin/tasktick-dev",
 ];
 
 async function isExecutable(path: string): Promise<boolean> {
-    try {
-        await fs.access(path, fsConstants.X_OK);
-        return true;
-    } catch {
-        return false;
-    }
+  try {
+    await fs.access(path, fsConstants.X_OK);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 /**
@@ -36,18 +36,20 @@ async function isExecutable(path: string): Promise<boolean> {
  * @param overrides Override the fallback chain entirely (mainly for tests).
  */
 export async function resolveCliPath(
-    preferred: string | undefined,
-    isDev: boolean = false,
-    overrides?: string[]
+  preferred: string | undefined,
+  isDev: boolean = false,
+  overrides?: string[],
 ): Promise<string | null> {
-    if (preferred && preferred.trim().length > 0) {
-        return (await isExecutable(preferred)) ? preferred : null;
-    }
-    const fallbacks = overrides ?? (isDev ? [...DEV_FALLBACKS, ...PROD_FALLBACKS] : PROD_FALLBACKS);
-    for (const candidate of fallbacks) {
-        if (await isExecutable(candidate)) return candidate;
-    }
-    return null;
+  if (preferred && preferred.trim().length > 0) {
+    return (await isExecutable(preferred)) ? preferred : null;
+  }
+  const fallbacks =
+    overrides ??
+    (isDev ? [...DEV_FALLBACKS, ...PROD_FALLBACKS] : PROD_FALLBACKS);
+  for (const candidate of fallbacks) {
+    if (await isExecutable(candidate)) return candidate;
+  }
+  return null;
 }
 
 export const CLI_FALLBACK_PATHS = PROD_FALLBACKS;

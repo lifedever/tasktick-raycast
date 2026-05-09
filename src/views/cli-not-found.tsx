@@ -1,10 +1,16 @@
 // src/views/cli-not-found.tsx
 import React from "react";
-import { Detail, ActionPanel, Action, Icon, openCommandPreferences } from "@raycast/api";
+import {
+  Detail,
+  ActionPanel,
+  Action,
+  Icon,
+  openCommandPreferences,
+} from "@raycast/api";
 import { CLI_FALLBACK_PATHS } from "../lib/cli-detection";
 
 export function CliNotFound() {
-    const markdown = `
+  const markdown = `
 # tasktick CLI not found
 
 To use this extension, enable the TaskTick CLI:
@@ -24,16 +30,27 @@ ${CLI_FALLBACK_PATHS.map((p) => `- \`${p}\``).join("\n")}
 Download it from [task-tick.lifedever.com](https://task-tick.lifedever.com).
 `;
 
-    return (
-        <Detail
-            markdown={markdown}
-            actions={
-                <ActionPanel>
-                    <Action title="Open Extension Preferences" icon={Icon.Gear} onAction={openCommandPreferences} />
-                    <Action.Open title="Open TaskTick" target="/Applications/TaskTick.app" icon={Icon.Window} />
-                    <Action.OpenInBrowser title="Download TaskTick" url="https://task-tick.lifedever.com" />
-                </ActionPanel>
-            }
-        />
-    );
+  return (
+    <Detail
+      markdown={markdown}
+      actions={
+        <ActionPanel>
+          <Action
+            title="Open Extension Preferences"
+            icon={Icon.Gear}
+            onAction={openCommandPreferences}
+          />
+          <Action.Open
+            title="Open TaskTick"
+            target="/Applications/TaskTick.app"
+            icon={Icon.Window}
+          />
+          <Action.OpenInBrowser
+            title="Download TaskTick"
+            url="https://task-tick.lifedever.com"
+          />
+        </ActionPanel>
+      }
+    />
+  );
 }
