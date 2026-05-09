@@ -19,26 +19,26 @@ describe("resolveCliPath", () => {
     it("prefers preference path when executable exists", async () => {
         const p = join(tmp, "custom-tasktick");
         makeExe(p);
-        const got = await resolveCliPath(p, []);
+        const got = await resolveCliPath(p, false, []);
         expect(got).toBe(p);
     });
 
     it("falls back through candidate list", async () => {
         const p = join(tmp, "fallback-tasktick");
         makeExe(p);
-        const got = await resolveCliPath(undefined, [join(tmp, "missing"), p]);
+        const got = await resolveCliPath(undefined, false, [join(tmp, "missing"), p]);
         expect(got).toBe(p);
     });
 
     it("returns null when nothing exists", async () => {
-        const got = await resolveCliPath(undefined, [join(tmp, "nope")]);
+        const got = await resolveCliPath(undefined, false, [join(tmp, "nope")]);
         expect(got).toBeNull();
     });
 
     it("ignores non-executable files", async () => {
         const p = join(tmp, "not-exec");
         writeFileSync(p, "");
-        const got = await resolveCliPath(p, []);
+        const got = await resolveCliPath(p, false, []);
         expect(got).toBeNull();
     });
 });
