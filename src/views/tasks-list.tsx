@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { ActionPanel, Action, List, Icon, showToast, Toast, Clipboard } from "@raycast/api";
 import { tasktick, CliError } from "../lib/tasktick";
 import { EventsStream } from "../lib/events";
-import { statusIcon, relativeTime } from "../lib/format";
+import { statusIcon, statusAccessories } from "../lib/format";
 import { LogsDetail } from "./logs-detail";
 import type { Task } from "../lib/types";
 
@@ -67,9 +67,7 @@ export function TasksList({ cliPath, prefs }: Props) {
                         icon={statusIcon(task)}
                         title={task.name}
                         subtitle={task.scheduleSummary}
-                        accessories={[
-                            { text: relativeTime(task.lastRunAt), tooltip: "Last run" }
-                        ]}
+                        accessories={statusAccessories(task)}
                         actions={
                             <ActionPanel>
                                 {isRunning ? (
