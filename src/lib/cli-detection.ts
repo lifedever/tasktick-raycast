@@ -4,7 +4,10 @@ import { promises as fs, constants as fsConstants } from "node:fs";
 const PROD_FALLBACKS = [
   "/usr/local/bin/tasktick",
   "/opt/homebrew/bin/tasktick",
-  "/Applications/TaskTick.app/Contents/MacOS/tasktick",
+  // CLI lives in Contents/cli/ (not Contents/MacOS/) to avoid the
+  // case-insensitive APFS collision between 'TaskTick' (GUI) and
+  // 'tasktick' (CLI). See TaskTick scripts/release.sh.
+  "/Applications/TaskTick.app/Contents/cli/tasktick",
 ];
 
 const DEV_FALLBACKS = [

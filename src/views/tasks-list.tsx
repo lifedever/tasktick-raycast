@@ -12,8 +12,24 @@ import {
 import { tasktick, CliError } from "../lib/tasktick";
 import { EventsStream } from "../lib/events";
 import { statusIcon, statusAccessories } from "../lib/format";
+import { isGuiRunning } from "../lib/gui-status";
 import { LogsDetail } from "./logs-detail";
 import type { Task } from "../lib/types";
+
+/**
+ * Sort by recent activity, falling back to creation time. Mirrors the GUI's
+ * "quick access" intent (TaskListView.swift sorts by lastManualRunAt) — we
+ * use lastRunAt because the CLI DTO doesn't expose lastManualRunAt yet.
+ * Cron-driven runs will reshuffle here in a way the GUI suppresses, but the
+ * raycast workflow is burst-style and a recent activity bias is still useful.
+ */
+function sortTasks(tasks: Task[]): Task[] {
+  return [...tasks].sort((a, b) => {
+    const ka = a.lastRunAt ?? a.createdAt;
+    const kb = b.lastRunAt ?? b.createdAt;
+    return kb.localeCompare(ka);
+  });
+}
 
 interface Props {
   cliPath: string;
@@ -28,7 +44,7 @@ export function TasksList({ cliPath, prefs }: Props) {
     setLoading(true);
     try {
       const list = await tasktick.list(cliPath);
-      setTasks(list);
+      setTasks(sortTasks(list));
     } catch (err) {
       const msg = err instanceof CliError ? err.message : String(err);
       await showToast({
@@ -61,6 +77,17 @@ export function TasksList({ cliPath, prefs }: Props) {
   const performAction = useCallback(
     async (verb: "run" | "stop" | "restart" | "reveal", task: Task) => {
       const verbCap = verb.charAt(0).toUpperCase() + verb.slice(1);
+      // Reveal is allowed to wake the GUI — that's the whole point. Other
+      // verbs require a running GUI; otherwise the CLI would silently
+      // auto-launch and report success, which surprises raycast users.
+      if (verb !== "reveal" && !(await isGuiRunning(cliPath))) {
+        await showToast({
+          style: Toast.Style.Failure,
+          title: "TaskTick is not running",
+          message: "Open TaskTick.app first, then try again",
+        });
+        return;
+      }
       if (prefs.showCompletionToast) {
         await showToast({
           style: Toast.Style.Animated,
