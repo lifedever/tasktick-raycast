@@ -1,9 +1,10 @@
 // src/views/tasks-list.tsx
 import React, { useEffect, useState, useCallback } from "react";
-import { ActionPanel, Action, List, Icon, showToast, Toast, Clipboard, Detail } from "@raycast/api";
+import { ActionPanel, Action, List, Icon, showToast, Toast, Clipboard } from "@raycast/api";
 import { tasktick, CliError } from "../lib/tasktick";
 import { EventsStream } from "../lib/events";
 import { statusIcon, relativeTime } from "../lib/format";
+import { LogsDetail } from "./logs-detail";
 import type { Task } from "../lib/types";
 
 interface Props {
@@ -101,9 +102,4 @@ export function TasksList({ cliPath, prefs }: Props) {
             })}
         </List>
     );
-}
-
-// TODO: Task 11 will replace this with a real LogsDetail in src/views/logs-detail.tsx
-export function LogsDetail(_: { cliPath: string; taskId: string; taskName: string; format: "text" | "json" }) {
-    return <Detail markdown="Logs detail placeholder — replaced in Task 11." />;
 }
